@@ -90,8 +90,8 @@ class OpenAI_Model:
             try:
                 if self.test:
                     total_input_length = sum([len(messages[i]["content"]) for i in range(len(messages))])
-                    output = "Hihi, this is a test\n"*50
-                    output_length = len(output)
+                    output = " response" * 1000 #"Hihi, this is a test\n"*50
+                    output_length = len(output.split())
                     message_content = json.dumps({"response_type":"answer_attempt"})
                     response = {
                         "usage": {"prompt_token_details": {"cached_tokens": 0}, "total_tokens": total_input_length + output_length, "prompt_tokens" : total_input_length, "completion_tokens": output_length},

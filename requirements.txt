@@ -8,3 +8,4 @@ nltk # Spider evaluation requirement
 sqlparse # Spider evaluation requirement
 pymongo # bson ObjectId
 sacrebleu  # wmt, totto evaluation
+openai # missing
