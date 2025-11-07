@@ -35,7 +35,7 @@ class OpenAI_Model:
             base_model = model.split(":")[1]
 
         prompt_tokens = usage['prompt_tokens']
-        if 'prompt_tokens_details' in usage:
+        if 'prompt_tokens_details' in usage and usage['prompt_tokens_details'] is not None:
             prompt_tokens_cached = usage['prompt_tokens_details']['cached_tokens']
         else:
             prompt_tokens_cached = 0
@@ -78,7 +78,7 @@ class OpenAI_Model:
         if "model" in model:
             model, address, port = model.split(":")
             os.environ["OPENAI_BASE_URL"] = f"http://{address}:{port}/v1"
-            self.__init__()
+            self.__init__(base_url =f"http://{address}:{port}/v1")
         kwargs = {}
         if is_json:
             kwargs["response_format"] = { "type": "json_object" }
@@ -108,8 +108,10 @@ class OpenAI_Model:
         response_text = response["choices"][0]["message"]["content"]
         total_usd = self.cost_calculator(model, usage)
         prompt_tokens_cached = 0
-        if 'prompt_tokens_details' in usage:
+        if 'prompt_tokens_details' in usage and usage['prompt_tokens_details'] is not None:
             prompt_tokens_cached = usage['prompt_tokens_details']['cached_tokens']
+        else:
+            prompt_tokens_cached = 0
 
         if not return_metadata:
             return response_text
