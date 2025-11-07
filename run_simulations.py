@@ -34,12 +34,12 @@ if __name__ == '__main__':
 
     parser.add_argument("--dataset_file", type=str, default="data/sharded_instructions_600.json", help="Dataset file to use")
 
-    parser.add_argument("--N_full_runs", type=int, default=1, help="Number of full runs per model")
-    parser.add_argument("--N_concat_runs", type=int, default=1, help="Number of concat runs per model")
-    parser.add_argument("--N_sharded_runs", type=int, default=1, help="Number of sharded runs per model")
+    parser.add_argument("--N_full_runs", type=int, default=0, help="Number of full runs per model")
+    parser.add_argument("--N_concat_runs", type=int, default=0, help="Number of concat runs per model")
+    parser.add_argument("--N_sharded_runs", type=int, default=10, help="Number of sharded runs per model")
     parser.add_argument("--models", nargs="+", default=["gpt-4o-mini"], # `, "gpt-4o"`
                         help="List of models to run experiments with")
-    parser.add_argument("--tasks", nargs="+", default=["math"], help="Tasks to run experiments with") # "code", "database", "actions", "math", "data2text", "summary", "translation"
+    parser.add_argument("--tasks", nargs="+", default=["data2text"], help="Tasks to run experiments with") # "code", "database", "actions", "math", "data2text", "summary", "translation"
     parser.add_argument("--system_model", type=str, default="gpt-4o-mini", help="System model to use")
     parser.add_argument("--user_model", type=str, default="gpt-4o-mini", help="User model to use")
     parser.add_argument("--N_workers", type=int, default=1, help="Number of workers to run experiments with")

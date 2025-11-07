@@ -19,12 +19,14 @@ def format_messages(messages, variables={}):
     return messages
 
 class OpenAI_Model:
-    def __init__(self):
+    def __init__(self, base_url = os.environ.get("OPENAI_BASE_URL")):
+        
         if "AZURE_OPENAI_API_KEY" in os.environ and "AZURE_OPENAI_ENDPOINT" in os.environ:
             self.client = AzureOpenAI(api_key=os.environ["AZURE_OPENAI_API_KEY"], azure_endpoint=os.environ["AZURE_OPENAI_ENDPOINT"], api_version="2024-10-01-preview")
         else:
-            assert "OPENAI_API_KEY" in os.environ
-            self.client = OpenAI(api_key=os.environ["OPENAI_API_KEY"])
+            #assert "OPENAI_API_KEY" in os.environ
+            print(f"[OpenAI_Model] Using OPENAI_BASE_URL={base_url}")
+            self.client = OpenAI(api_key="123", base_url=base_url)
 
     def cost_calculator(self, model, usage, is_batch_model=False):
         is_finetuned, base_model = False, model
@@ -58,6 +60,9 @@ class OpenAI_Model:
             inp_token_cost, out_token_cost = 0.075, 0.150
         elif base_model.startswith("o1-preview") or base_model == "o1":
             inp_token_cost, out_token_cost = 0.015, 0.06
+        elif model.startswith("model"):
+            inp_token_cost, out_token_cost = 0, 0
+
         else:
             raise Exception(f"Model {model} pricing unknown, please add")
 
@@ -70,6 +75,10 @@ class OpenAI_Model:
         return total_usd
 
     def generate(self, messages, model="gpt-4o-mini", timeout=30, max_retries=3, temperature=1.0, is_json=False, return_metadata=False, max_tokens=None, variables={}):
+        if "model" in model:
+            model, address, port = model.split(":")
+            os.environ["OPENAI_BASE_URL"] = f"http://{address}:{port}/v1"
+            self.__init__()
         kwargs = {}
         if is_json:
             kwargs["response_format"] = { "type": "json_object" }
