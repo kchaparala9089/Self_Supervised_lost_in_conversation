@@ -60,11 +60,8 @@ class OpenAI_Model:
             inp_token_cost, out_token_cost = 0.075, 0.150
         elif base_model.startswith("o1-preview") or base_model == "o1":
             inp_token_cost, out_token_cost = 0.015, 0.06
-        elif model.startswith("model"):
-            inp_token_cost, out_token_cost = 0, 0
-
         else:
-            raise Exception(f"Model {model} pricing unknown, please add")
+            inp_token_cost, out_token_cost = 0, 0
 
         cache_discount = 0.5 # cached tokens are half the price
         batch_discount = 0.5 # batch API is half the price
@@ -75,7 +72,7 @@ class OpenAI_Model:
         return total_usd
 
     def generate(self, messages, model="gpt-4o-mini", timeout=30, max_retries=3, temperature=1.0, is_json=False, return_metadata=False, max_tokens=None, variables={}):
-        if "model" in model:
+        if "localhost" in model:
             model, address, port = model.split(":")
             os.environ["OPENAI_BASE_URL"] = f"http://{address}:{port}/v1"
             self.__init__(base_url =f"http://{address}:{port}/v1")

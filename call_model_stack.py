@@ -7,12 +7,13 @@ import certifi
 
 os.environ['SSL_CERT_FILE'] = certifi.where()
 
-
+#"/export/fs06/aalme2/Self_Supervised_lost_in_conversation/models/Llama-3.1-8B", 
+#"Base", 
 if __name__ == '__main__':
     argparser = argparse.ArgumentParser()
-    argparser.add_argument('--user_system_model', type=str, default="/export/fs06/aalme2/Self_Supervised_lost_in_conversation/models/Llama-3.1-Tulu-3-8B-SFT", help='Model to call')
-    argparser.add_argument('--experiment_models', type=str, nargs='+', default=["/export/fs06/aalme2/Self_Supervised_lost_in_conversation/models/Llama-3.1-8B", "/export/fs06/aalme2/Self_Supervised_lost_in_conversation/models/Llama-3.1-Tulu-3-8B-SFT", "/export/fs06/aalme2/Self_Supervised_lost_in_conversation/models/Llama-3.1-Tulu-3-8B-DPO"], help='Models to run experiments with')
-    argparser.add_argument('--experiment_model_names', type=str, nargs='+', default=["Base", "SFT", "DPO"], help='Names of the experiment models')
+    argparser.add_argument('--user_system_model', type=str, default="/export/fs06/aalme2/Self_Supervised_lost_in_conversation/models/Llama-3.1-8B-Instruct", help='Model to call')
+    argparser.add_argument('--experiment_models', type=str, nargs='+', default=["/export/fs06/aalme2/Self_Supervised_lost_in_conversation/models/Llama-3.1-Tulu-3-8B-SFT", "/export/fs06/aalme2/Self_Supervised_lost_in_conversation/models/Llama-3.1-Tulu-3-8B-DPO", "/export/fs06/aalme2/Self_Supervised_lost_in_conversation/models/Llama-3.1-8B-Instruct"], help='Models to run experiments with')
+    argparser.add_argument('--experiment_model_names', type=str, nargs='+', default=["SFT", "DPO", "Instruct"], help='Names of the experiment models')
     args = argparser.parse_args()
 
     assert len(args.experiment_models) == len(args.experiment_model_names), f"Number of experiment models {len(args.experiment_models)} must match number of experiment model names {len(args.experiment_model_names)}"
